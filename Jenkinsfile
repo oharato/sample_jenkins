@@ -25,7 +25,7 @@ node {
     dir('complete') {
       sh 'docker pull maven:3.5.2-jdk-8-alpine'
       def pwd = pwd()
-      echo $pwd
+      echo ${pwd}
       withDockerContainer(args: "-v ${pwd}:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.2-jdk-8-alpine') {
         sh 'mvn clean package -DskipTests=true'
       }
