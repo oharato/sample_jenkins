@@ -35,7 +35,9 @@ node {
     sh 'docker pull java:8u111-jdk-alpine'
     // 前回起動したコンテナが残っていたら停止する
     // -a => 停止したものも含めてコンテナを表示
-    sh 'docker ps -a --filter "name=gs-rest-service" | awk \'BEGIN{i=0}{i++;}END{if(i>=2)system("docker stop gs-rest-service")}\''
+    sh """docker ps -a --filter name=gs-rest-service \
+      | awk 'BEGIN{i=0}{i++;}END{if(i>=2)system("docker stop gs-rest-service")}'
+    """
     // --rm => コンテナが停止したら自動的にコンテナを削除
     // -p ホストのポート:コンテナのポート => ポートをマッピングする
     // -v ホストのディレクトリ:コンテナのディレクトリ => ディレクトリを共有する
