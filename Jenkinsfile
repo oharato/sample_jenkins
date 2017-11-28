@@ -22,13 +22,10 @@ node {
     checkout([$class: 'GitSCM', branches: [[name: "${branch}"]], userRemoteConfigs: [[url: "${app_repo_url}"]]])
   }
   stage('Build') {
-    dir('complete') {
-      sh 'docker pull maven:3.5.2-jdk-8-alpine'
-      def pwd = pwd()
-      echo "${pwd}"
-      withDockerContainer(args: "-v ${pwd}:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.2-jdk-8-alpine') {
-        sh 'mvn clean package -DskipTests=true'
-      }
+    sh 'docker pull maven:3.5.2-jdk-8-alpine'
+    def pwd = pwd()
+    withDockerContainer(args: "-v ${pwd}/complete:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.2-jdk-8-alpine') {
+      sh 'mvn clean package -DskipTests=true'
     }
   }
   stage('Deploy') {
