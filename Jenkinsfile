@@ -23,11 +23,10 @@ node {
   }
   stage('Build') {
     dir('complete') {
-      sh 'docker pull maven:3.5.0-jdk-8-alpine'
+      sh 'docker pull maven:3.5.2-jdk-8-alpine'
       def pwd = pwd()
-      withDockerContainer(args: "-v ${pwd}:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.0-jdk-8-alpine') {
-        sh 'mvn clean'
-        sh 'mvn package -DskipTests=true'
+      withDockerContainer(args: "-v ${pwd}:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.2-jdk-8-alpine') {
+        sh 'mvn clean package -DskipTests=true'
       }
     }
   }
