@@ -24,7 +24,11 @@ node {
   stage('Build') {
     sh 'docker pull maven:3.5.2-jdk-8-alpine'
     def pwd = pwd()
-    withDockerContainer(args: "-v ${pwd}/complete:/usr/src/mymaven -w /usr/src/mymaven", image: 'maven:3.5.2-jdk-8-alpine') {
+    echo "$pwd" // /var/jenkins_home/workspace/deploy_app
+    withDockerContainer(
+      args: "-v ${pwd}/complete:/usr/src/mymaven -w /usr/src/mymaven",
+      image: 'maven:3.5.2-jdk-8-alpine'
+    ) {
       sh 'mvn clean package -DskipTests=true'
     }
   }
