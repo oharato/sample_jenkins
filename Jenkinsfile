@@ -24,12 +24,12 @@ node {
   }
   stage('Build') {
     sh 'docker pull maven:3.5.2-jdk-8-alpine'
-    withDockerContainer(
-      args: "-v ${JENKINS_DATA_DIR}/workspace/deploy_app/complete:/usr/src/mymaven -w /usr/src/mymaven",
-      image: 'maven:3.5.2-jdk-8-alpine'
-    ) {
-      sh 'mvn clean package -DskipTests=true'
-    }
+    sh """docker run \
+      -v ${JENKINS_DATA_DIR}/workspace/deploy_app/complete:/usr/src/mymaven \
+      -w /usr/src/mymaven \
+      maven:3.5.2-jdk-8-alpine \
+      mvn clean package -DskipTests=true
+    """
   }
   stage('Deploy') {
     sh 'docker pull java:8u111-jdk-alpine'
