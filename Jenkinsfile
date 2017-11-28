@@ -42,7 +42,16 @@ node {
     // -p ホストのポート:コンテナのポート => ポートをマッピングする
     // -v ホストのディレクトリ:コンテナのディレクトリ => ディレクトリを共有する
     // -w コンテナのディレクトリ => コンテナ起動時のワーキングディレクトリを指定する
-    sh 'docker run --rm --name gs-rest-service -p 80:80 -v /docker/jenkins/workspace/deploy_app:/usr/src/myapp -w /usr/src/myapp java:8u111-jdk-alpine java -jar complete/target/gs-rest-service-0.1.0.jar --server.port=80 &'
+    sh """docker run \
+      --rm \
+      --name gs-rest-service \
+      -p 80:80 \
+      -v /docker/jenkins/workspace/deploy_app:/usr/src/myapp \
+      -w /usr/src/myapp \
+      java:8u111-jdk-alpine java \
+      -jar complete/target/gs-rest-service-0.1.0.jar \
+      --server.port=80 &
+    """
   }
 }
 
