@@ -18,7 +18,7 @@ pipeline {
     // }
     stage('Checkout') {
       steps{
-        git url: "${env.APP_REPO_URL}", branch: "${param.branch}"
+        git url: "${env.APP_REPO_URL}", branch: "${params.branch}"
       }
     }
     stage('Build') {
