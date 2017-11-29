@@ -25,7 +25,7 @@ node {
   stage('Build') {
     sh 'docker pull maven:3.5.2-jdk-8-alpine'
     sh """docker run \
-      -v ${JENKINS_DATA_DIR}/workspace/deploy_app/complete:/usr/src/mymaven \
+      -v ${JENKINS_DATA_DIR}/jobs/deploy_app/workspace/complete:/usr/src/mymaven \
       -w /usr/src/mymaven \
       maven:3.5.2-jdk-8-alpine \
       mvn clean package -DskipTests=true
@@ -46,7 +46,7 @@ node {
       --rm \
       --name gs-rest-service \
       -p 80:80 \
-      -v ${JENKINS_DATA_DIR}/workspace/deploy_app:/usr/src/myapp \
+      -v ${JENKINS_DATA_DIR}/jobs/deploy_app/workspace:/usr/src/myapp \
       -w /usr/src/myapp \
       java:8u111-jdk-alpine java \
       -jar complete/target/gs-rest-service-0.1.0.jar \
