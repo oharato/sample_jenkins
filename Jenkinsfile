@@ -25,7 +25,7 @@ pipeline {
       agent {
         docker { 
           image 'maven:3.5.2-jdk-8-alpine'
-          args """"-v ${env.JENKINS_DATA_DIR}/workspace/deploy_app/complete:/usr/src/mymaven \
+          args """"-v ${pwd()}/complete:/usr/src/mymaven \
             -w /usr/src/mymaven
             """
         }
