@@ -2,32 +2,23 @@
 pipeline {
   agent any 
   environment{
-    branch = ''
-    // デフォルトをセットするイディオム。
-    // Rubyにおける hoge ||= 'fuga'
-    default_branch = env.DEFAULT_BRANCH_GIT ?: 'master'
-    app_repo_url = env.APP_REPO_URL
     JENKINS_DATA_DIR = '/docker/jenkins'
   }
+  parameters {
+    string(name: 'branch', defaultValue: env.DEFAULT_BRANCH_GIT, description: 'master develop')
+  }
   stages {
-    stage('Parameters') {
-      steps{
-        try{
-          timeout(time: 30, unit: 'SECONDS') {
-            branch = input message: 'パラメータを入力して下さい',
-              parameters: [
-                string(defaultValue: default_branch, description: 'master develop', name: 'branch'),
-              ]
-          }
-        } catch(err) {
-          // タイムアウトエラーが起きたらデフォルトブランチをセットする
-          branch = default_branch
-        }
-      }
-    }
+    // stage('Parameters') {
+    //   steps{
+    //         branch = input message: 'パラメータを入力して下さい',
+    //           parameters: [
+    //             string(defaultValue: env.DEFAULT_BRANCH_GIT, description: 'master develop', name: 'branch'),
+    //           ]
+    //   }
+    // }
     stage('Checkout') {
       steps{
-        checkout([$class: 'GitSCM', branches: [[name: "${branch}"]], userRemoteConfigs: [[url: "${app_repo_url}"]]])
+        git url: "${env.APP_REPO_URL}", branch: "${param.branch}"
       }
     }
     stage('Build') {
