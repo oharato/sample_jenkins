@@ -1,12 +1,14 @@
 #!groovy
 pipeline {
   agent any 
-  def branch
-  // デフォルトをセットするイディオム。
-  // Rubyにおける hoge ||= 'fuga'
-  def default_branch = env.DEFAULT_BRANCH_GIT ?: 'master'
-  def app_repo_url = env.APP_REPO_URL
-  def JENKINS_DATA_DIR = '/docker/jenkins'
+  environment{
+    branch = ''
+    // デフォルトをセットするイディオム。
+    // Rubyにおける hoge ||= 'fuga'
+    default_branch = env.DEFAULT_BRANCH_GIT ?: 'master'
+    app_repo_url = env.APP_REPO_URL
+    JENKINS_DATA_DIR = '/docker/jenkins'
+  }
   stages {
     stage('Parameters') {
       steps{
